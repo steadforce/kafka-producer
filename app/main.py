@@ -56,5 +56,5 @@ avro_producer = AvroProducer(avro_config, default_value_schema=avro_schema)
 with open(os.path.join(script_dir, 'dataset.csv')) as file:
     reader = csv.DictReader(file, delimiter=",")
     for row in reader:
-        producer.produce(TOPIC, value=row)
+        producer.produce(TOPIC, value=json.dumps(row))
         time.sleep(5)

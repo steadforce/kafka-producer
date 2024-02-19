@@ -56,6 +56,5 @@ avro_producer = AvroProducer(avro_config, default_value_schema=avro_schema)
 with open(os.path.join(script_dir, 'dataset.csv')) as file:
     reader = csv.DictReader(file, delimiter=",")
     for row in reader:
-        _logger.info(f"Sending to Topic: {content}")
         producer.produce(TOPIC, value=row)
         time.sleep(5)

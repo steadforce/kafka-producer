@@ -11,11 +11,6 @@ from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
 
 
-TOPIC = os.environ.get("TOPIC")
-TOPIC_WITH_SCHEMA = os.environ.get("TOPIC_WITH_SCHEMA")
-BOOTSTRAP_SERVER = os.environ.get("BOOTSTRAP_SERVER")
-SCHEMA_REGISTRY_URL = os.environ.get("SCHEMA_REGISTRY_URL")
-
 def setup_logging():
     ENABLE_JSON_LOGGING = os.environ.get("ENABLE_JSON_LOGGING", "true")
     json_logging_enabled = False if ENABLE_JSON_LOGGING == "false" else True
@@ -26,11 +21,18 @@ def setup_logging():
     json_logging.init_non_web(enable_json=json_logging_enabled)
     return logger
 
+
 def load_avro_schema_from_file(schema_file_path):
     # Open the JSON schema file and load the schema as a dictionary
     with open(schema_file_path, 'r') as schema_file:
         schema = schema_file.read()
     return schema
+
+
+TOPIC = os.environ.get("TOPIC")
+TOPIC_WITH_SCHEMA = os.environ.get("TOPIC_WITH_SCHEMA")
+BOOTSTRAP_SERVER = os.environ.get("BOOTSTRAP_SERVER")
+SCHEMA_REGISTRY_URL = os.environ.get("SCHEMA_REGISTRY_URL")
 
 _logger = setup_logging()
 

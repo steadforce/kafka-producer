@@ -59,4 +59,5 @@ with open(os.path.join(script_dir, 'dataset.csv')) as file:
     reader = csv.DictReader(file, delimiter=",")
     for row in reader:
         producer.produce(TOPIC, value=json.dumps(row))
+        _logger.info("Produced message.")
         time.sleep(PRODUCE_INTERVAL)

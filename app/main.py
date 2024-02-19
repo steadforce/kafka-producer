@@ -34,6 +34,8 @@ TOPIC_WITH_SCHEMA = os.environ.get("TOPIC_WITH_SCHEMA")
 BOOTSTRAP_SERVER = os.environ.get("BOOTSTRAP_SERVER")
 SCHEMA_REGISTRY_URL = os.environ.get("SCHEMA_REGISTRY_URL")
 
+PRODUCE_INTERVAL = float(os.environ.get("PRODUCE_INTERVAL"))
+
 _logger = setup_logging()
 
 script_dir = os.path.realpath(os.path.dirname(__file__))
@@ -57,4 +59,4 @@ with open(os.path.join(script_dir, 'dataset.csv')) as file:
     reader = csv.DictReader(file, delimiter=",")
     for row in reader:
         producer.produce(TOPIC, value=json.dumps(row))
-        time.sleep(5)
+        time.sleep(PRODUCE_INTERVAL)

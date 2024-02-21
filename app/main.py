@@ -26,7 +26,7 @@ def setup_logging():
 
 def load_avro_schema_from_file(schema_file_path):
     # Open the JSON schema file and load the schema as a dictionary
-    with open(schema_file_path, 'r') as schema_file:
+    with open(schema_file_path, "r") as schema_file:
         schema = schema_file.read()
     return schema
 
@@ -45,16 +45,26 @@ def manipulate_row(row: dict) -> dict:
         return {}
     dict_keys = list(row.keys())
     # numbers of dict keys to manipulate
-    number_manipulated_values = random.choices(list(itertools.chain(*[[i] * (len(dict_keys) +1 -i) for i in range(1, len(dict_keys)+1)])), k=1)[0]
+    number_manipulated_values = random.choices(
+        list(
+            itertools.chain(
+                *[[i] * (len(dict_keys) + 1 - i) for i in range(1, len(dict_keys) + 1)]
+            )
+        ),
+        k=1,
+    )[0]
     # keys to manipulate
     manipulate_cols = random.sample(dict_keys, k=number_manipulated_values)
     for col in manipulate_cols:
-        manipulate_by = random.choices([None, "null", "n.a.", "drop_column"], [0.5, 0.2 ,0.2, 0.1], k=1)[0]
+        manipulate_by = random.choices(
+            [None, "null", "n.a.", "drop_column"], [0.5, 0.2, 0.2, 0.1], k=1
+        )[0]
         if manipulate_by == "drop_column":
             del row[col]
         else:
             row[col] = manipulate_by
     return row
+
 
 TOPIC = os.environ.get("TOPIC")
 TOPIC_WITH_SCHEMA = os.environ.get("TOPIC_WITH_SCHEMA")
@@ -66,20 +76,20 @@ PRODUCE_INTERVAL = float(os.environ.get("PRODUCE_INTERVAL"))
 _logger = setup_logging()
 
 script_dir = os.path.realpath(os.path.dirname(__file__))
-avro_schema = load_avro_schema_from_file(os.path.join(script_dir, 'schema.avsc'))
+avro_schema = load_avro_schema_from_file(os.path.join(script_dir, "schema.avsc"))
 
-schema_registry_conf = {'url': SCHEMA_REGISTRY_URL}
+schema_registry_conf = {"url": SCHEMA_REGISTRY_URL}
 schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
 avro_serializer = AvroSerializer(schema_registry_client, avro_schema)
-producer_conf = {'bootstrap.servers': BOOTSTRAP_SERVER}
+producer_conf = {"bootstrap.servers": BOOTSTRAP_SERVER}
 
 
 _logger.info("Starting producer with config: %s", producer_conf)
 
 producer = Producer(producer_conf)
 
-with open(os.path.join(script_dir, 'dataset.csv')) as file:
+with open(os.path.join(script_dir, "dataset.csv")) as file:
     reader = csv.DictReader(file, delimiter=",")
     for row in reader:
         key = create_key(row)
@@ -91,4 +101,3 @@ with open(os.path.join(script_dir, 'dataset.csv')) as file:
     # Wait for outstanding messages to be delivered
     producer.flush()
     exit(0)
-

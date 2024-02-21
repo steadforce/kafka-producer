@@ -1,5 +1,7 @@
+import itertools
 import logging
 import os
+import random
 import sys
 import time
 import json
@@ -7,8 +9,8 @@ import csv
 
 import json_logging
 from confluent_kafka import Producer
-from confluent_kafka import avro
-from confluent_kafka.avro import AvroProducer
+from confluent_kafka.schema_registry import SchemaRegistryClient
+from confluent_kafka.schema_registry.avro import AvroSerializer
 
 
 def setup_logging():
@@ -29,6 +31,31 @@ def load_avro_schema_from_file(schema_file_path):
     return schema
 
 
+def create_key(row: dict) -> str:
+    return f"{row["Index"]}-{row["ToolId"]}-{row["Machine"]}"
+
+
+def manipulate_row(row: dict) -> dict:
+    manipulate = random.choices([True, False], [0.1, 0.9], k=1)[0]
+    if not manipulate:
+        return row
+    _logger.info("Message is MANIPULATED!")
+    return_empty = random.choices([True, False], [0.1, 0.9], k=1)[0]
+    if return_empty:
+        return {}
+    dict_keys = list(row.keys())
+    # numbers of dict keys to manipulate
+    number_manipulated_values = random.choices(list(itertools.chain(*[[i] * (len(dict_keys) +1 -i) for i in range(1, len(dict_keys)+1)])), k=1)[0]
+    # keys to manipulate
+    manipulate_cols = random.sample(dict_keys, k=number_manipulated_values)
+    for col in manipulate_cols:
+        manipulate_by = random.choices([None, "null", "n.a.", "drop_column"], [0.5, 0.2 ,0.2, 0.1], k=1)[0]
+        if manipulate_by == "drop_column":
+            del row[col]
+        else:
+            row[col] = manipulate_by
+    return row
+
 TOPIC = os.environ.get("TOPIC")
 TOPIC_WITH_SCHEMA = os.environ.get("TOPIC_WITH_SCHEMA")
 BOOTSTRAP_SERVER = os.environ.get("BOOTSTRAP_SERVER")
@@ -41,23 +68,27 @@ _logger = setup_logging()
 script_dir = os.path.realpath(os.path.dirname(__file__))
 avro_schema = load_avro_schema_from_file(os.path.join(script_dir, 'schema.avsc'))
 
-config = {'bootstrap.servers': BOOTSTRAP_SERVER}
+schema_registry_conf = {'url': SCHEMA_REGISTRY_URL}
+schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
-_logger.info("Starting producer with config: %s", config)
+avro_serializer = AvroSerializer(schema_registry_client, avro_schema)
+producer_conf = {'bootstrap.servers': BOOTSTRAP_SERVER}
 
-producer = Producer(config)
 
-avro_config = {**config,
-               'schema.registry.url': SCHEMA_REGISTRY_URL
-               }
+_logger.info("Starting producer with config: %s", producer_conf)
 
-_logger.info("Starting avro producer with config: %s", avro_config)
-
-avro_producer = AvroProducer(avro_config, default_value_schema=avro_schema)
+producer = Producer(producer_conf)
 
 with open(os.path.join(script_dir, 'dataset.csv')) as file:
     reader = csv.DictReader(file, delimiter=",")
     for row in reader:
-        producer.produce(TOPIC, value=json.dumps(row))
+        key = create_key(row)
+        row = manipulate_row(row)
+        producer.produce(TOPIC, key=key, value=json.dumps(row))
         _logger.info("Produced message.")
         time.sleep(PRODUCE_INTERVAL)
+    _logger.info("End of stream reached.")
+    # Wait for outstanding messages to be delivered
+    producer.flush()
+    exit(0)
+

@@ -95,7 +95,7 @@ with open(os.path.join(script_dir, "dataset.csv")) as file:
         key = create_key(row)
         row = manipulate_row(row)
         producer.produce(TOPIC, key=key, value=json.dumps(row))
-        _logger.info("Produced message.")
+        _logger.debug("Produced message.")
         time.sleep(PRODUCE_INTERVAL)
     _logger.info("End of stream reached.")
     # Wait for outstanding messages to be delivered

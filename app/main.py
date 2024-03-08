@@ -41,29 +41,10 @@ def manipulate_row(row: dict) -> dict:
         _logger.info("Message is NOT MANIPULATED!")
         return row
     _logger.info("Message is MANIPULATED!")
-    return_empty = random.choices([True, False], [0.1, 0.9], k=1)[0]
-    if return_empty:
-        return {}
     dict_keys = list(row.keys())
-    # numbers of dict keys to manipulate
-    number_manipulated_values = random.choices(
-        list(
-            itertools.chain(
-                *[[i] * (len(dict_keys) + 1 - i) for i in range(1, len(dict_keys) + 1)]
-            )
-        ),
-        k=1,
-    )[0]
-    # keys to manipulate
-    manipulate_cols = random.sample(dict_keys, k=number_manipulated_values)
-    for col in manipulate_cols:
-        manipulate_by = random.choices(
-            [None, "null", "n.a.", "drop_column"], [0.5, 0.2, 0.2, 0.1], k=1
-        )[0]
-        if manipulate_by == "drop_column":
-            del row[col]
-        else:
-            row[col] = manipulate_by
+    # key to manipulate
+    manipulate_col = random.sample(dict_keys, k=1)[0]
+    row[manipulate_col] = None
     return row
 
 

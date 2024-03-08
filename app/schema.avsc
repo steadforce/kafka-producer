@@ -1,0 +1,91 @@
+{
+    "name": "Data",
+    "namespace": "com.steadforce.playground.avro",
+    "type": "record",
+	"fields": [
+		{
+			"name": "index",
+			"type": "int"
+		},
+		{
+			"name": "operationendtime",
+			"type": "int"
+		},
+		{
+			"name": "toolid",
+			"type": "int"
+		},
+		{
+			"name": "machine",
+			"type": "int"
+		},
+		{
+			"name": "process",
+			"type": "int"
+		},
+		{
+			"name": "p1datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p1datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p2datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p2datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p3datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p3datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p4datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p4datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p5datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p5datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p6datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p6datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p7datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p7datapoint2",
+			"type": "float"
+		},
+		{
+			"name": "p8datapoint1",
+			"type": "float"
+		},
+		{
+			"name": "p8datapoint2",
+			"type": "float"
+		}
+	]
+}

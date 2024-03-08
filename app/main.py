@@ -38,6 +38,7 @@ def create_key(row: dict) -> str:
 def manipulate_row(row: dict) -> dict:
     manipulate = random.choices([True, False], [0.1, 0.9], k=1)[0]
     if not manipulate:
+        _logger.info("Message is NOT MANIPULATED!")
         return row
     _logger.info("Message is MANIPULATED!")
     return_empty = random.choices([True, False], [0.1, 0.9], k=1)[0]

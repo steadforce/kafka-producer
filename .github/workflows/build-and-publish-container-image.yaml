@@ -51,13 +51,13 @@ jobs:
           type=semver,pattern={{major}}
           type=sha
     - name: Build container image for tests
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         push: false
         tags: ${{ env.IMAGE_NAME }}:test
     - name: Tag and push tested container image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         push: ${{ github.event_name != 'pull_request' }}

@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
     # via requests
 confluent-kafka==2.3.0
     # via -r requirements.in
-fastavro==1.9.4
+fastavro==1.11.1
     # via -r requirements.in
 idna==3.7
     # via requests

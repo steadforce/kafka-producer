@@ -2,7 +2,7 @@ FROM python:3.12-alpine
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apk add --no-cache build-base=0.5-r3 librdkafka-dev=2.3.0-r1 && \
+RUN apk add --no-cache build-base=0.5-r3 librdkafka-dev=2.10.0-r0 && \
     mkdir /install
 
 WORKDIR /src

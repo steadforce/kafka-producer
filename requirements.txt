@@ -6,7 +6,7 @@
 #
 avro==1.11.3
     # via -r requirements.in
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.4.2
     # via requests

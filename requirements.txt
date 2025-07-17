@@ -4,17 +4,17 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-avro==1.11.3
+avro==1.12.0
     # via -r requirements.in
 certifi==2024.12.14
     # via requests
 charset-normalizer==3.4.2
     # via requests
-confluent-kafka==2.3.0
+confluent-kafka==2.10.0
     # via -r requirements.in
-fastavro==1.9.4
+fastavro==1.11.1
     # via -r requirements.in
-idna==3.7
+idna==3.10
     # via requests
 json-logging==1.5.1
     # via -r requirements.in

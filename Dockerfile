@@ -1,4 +1,4 @@
-FROM python:3.12-alpine
+FROM python:3.13-alpine
 
 ENV PYTHONUNBUFFERED 1
 
@@ -7,7 +7,7 @@ RUN apk add --no-cache build-base=0.5-r3 librdkafka-dev=2.10.0-r0 && \
 
 WORKDIR /src
 COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -U pip==24.0 setuptools==69.1.0 wheel==0.42.0 && pip install --no-cache-dir --no-warn-script-location -r ./requirements.txt
+RUN pip install --no-cache-dir -U pip==25.1.1 setuptools==69.1.0 wheel==0.42.0 && pip install --no-cache-dir --no-warn-script-location -r ./requirements.txt
 
 COPY app/ app/
 COPY dataset/ app/

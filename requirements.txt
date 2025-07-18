@@ -10,7 +10,7 @@ certifi==2025.7.14
     # via requests
 charset-normalizer==3.4.2
     # via requests
-confluent-kafka==2.10.0
+confluent-kafka==2.11.0
     # via -r requirements.in
 fastavro==1.11.1
     # via -r requirements.in

@@ -16,7 +16,7 @@ fastavro==1.11.1
     # via -r requirements.in
 idna==3.10
     # via requests
-json-logging==1.5.1
+json-logging==1.6.0
     # via -r requirements.in
 requests==2.32.4
     # via -r requirements.in

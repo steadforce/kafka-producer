@@ -14,7 +14,7 @@ confluent-kafka==2.10.0
     # via -r requirements.in
 fastavro==1.11.1
     # via -r requirements.in
-idna==3.10
+idna==3.15
     # via requests
 json-logging==1.5.1
     # via -r requirements.in
